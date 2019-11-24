@@ -1,5 +1,7 @@
 'use strict';
 
+//constantes
+
 const button = document.querySelector('.js-button');
 const input = document.querySelector('.js-input');
 
@@ -7,42 +9,46 @@ const clue = document.querySelector('.js-clue');
 const counter = document.querySelector('.js-counter');
 let counterValue = 0;
 
+//Random Number
+
 function getRandomNumber(max) {
   return parseInt(Math.ceil(Math.random() * max));
 }
-console.log('El número aleatorio es el ' + getRandomNumber(100));
+const randomNumber = getRandomNumber(100);
+console.log('El número aleatorio es el ' + randomNumber);
 
-const showClues = function () {
-  const randomNumber = getRandomNumber(100);
-  conditionClues(randomNumber);
+//Pistas
+
+function showClues() {
+  const userNumber = parseInt(input.value);
+  if (userNumber < 0 || userNumber > 100) {
+    updateClues ('El número tiene que estar entre 0 y 100');
+  } else if (userNumber === randomNumber) {
+    updateClues ('¡Yeeei! ACERTASTE :)');
+  } else if (userNumber > randomNumber) {
+    updateClues ('Demasiado alto...¡afloja!');
+  } else if (userNumber < randomNumber) {
+    updateClues ('Demasiado bajo...¡dale un poco de caña!');
+  } 
 }
 
-const userNumber = function () {
-  event.preventDefault();
-console.log('Tu número es ' + input.value);
+function updateClues(text) {
+  clue.innerHTML = text;
 }
 
- const conditionClues = function (userNumber) {
-  
-if (userNumber > showClues) {
-  clue.innerHTML = 'Demasiado alto...¡afloja!';
-} else if  (userNumber < showClues) {
-  clue.innerHTML = 'Demasiado bajo...¡dale un poco de caña!';
-} else if (userNumber === showClues) {
-  clue.innerHTML = '¡Yeeei! ACERTASTE :)'
-}
-}
-
+//Contador
 function updateCounter () {
   counterValue += 1;
-  counter.innerHTML = counterValue;
+  counter.innerHTML = 'Número de intentos: ' + counterValue;
 }
 
-const handleButton = function () {
+//función handler
+const handleButton = function (event) {
   event.preventDefault();
   updateCounter ();
-  conditionClues();
+  showClues();
 }
-button.addEventListener('click',userNumber);
- button.addEventListener('click', handleButton);
+
+//función listener
+button.addEventListener('click', handleButton);
  
